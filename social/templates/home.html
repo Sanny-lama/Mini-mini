@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mini Mini Social</title>
+</head>
+
+<body>
+
+<h1>Mini Mini Social</h1>
+
+<h2>Posts</h2>
+
+{% for post in posts %}
+
+<p>{{ post.content }}</p>
+<hr>
+
+{% empty %}
+
+<p>No posts yet</p>
+
+{% endfor %}
+
+</body>
+
+</html>
