@@ -26,19 +26,18 @@ class Comment(models.Model):
 
 
 #notification page
-class NOtification(models.Model):
+class Notification(models.Model):
  sender=models.ForeignKey(
   User, on_delete=models.CASCADE,
   related_name="sender")
  
  receiver=models.ForeignKey(
   User, on_delete=models.CASCADE,
-  related_name="reciever"
+  related_name="receiver"
  )
 
 
 tyype=models.CharField(
- 
  max_length=100    )
   
 
