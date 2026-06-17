@@ -32,13 +32,19 @@ created_at =models.DateField(auto_now_add=True)
 #notification page
 class NOtification(models.Model):
  sender=models.Foreignkey(
-  User, on_delete=models.CASCADE)
+  User, on_delete=models.CASCADE,
+  related_name="sender")
  
- post=models.Foreign.key(Post, on_delete=models.CASCADE)
+ receiver=models.ForeignKey(
+  User, on_delete=models.CASCADE,
+  related_name="reciever"
+ )
 
- text=models.TextField()
 
- created_at=models.DateTimeField(auto_now_add=True)
+tyype=models.CharField(
+ 
+ max_length=100    )
+  
 
-
+created_at=models.DateTimeField(auto_now_add=True)
 
