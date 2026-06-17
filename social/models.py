@@ -2,36 +2,32 @@ from django.db import models
 from django.contrib.auth.models import User
 
 #Interaction
+#yo bananu ko karan mailey yo bitra socials bata nai post ko 
+# lagi import gardai xu so aauta class post banako ho
+class Post(models.Model):
+  title=models.CharField(max_length=100, default="No title")
+  content=models.TextField()
+
+
+
 #feeback page like system
-from social.models import Post
 
-
-class like(models.Model):
- user = models.Foreignkey(User, on_delete=models.CASCADE)
- post = models.Foreignkey(Post, on_delete=models.CASDCADE)
-
- created_at =models.DateTimeField(auto_now_add=True)
-
-
-
-
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
  #comment system
 class Comment(models.Model):
- 
- user=models.Foreignkey(User, on_delete=models.CASCADE)
-
- post=models.ForeignKey(Post, on_delete=models.CASCADE)
-   
-text=models.Textfield()
-created_at =models.DateField(auto_now_add=True)
-
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 #notification page
 class NOtification(models.Model):
- sender=models.Foreignkey(
+ sender=models.ForeignKey(
   User, on_delete=models.CASCADE,
   related_name="sender")
  
@@ -47,4 +43,8 @@ tyype=models.CharField(
   
 
 created_at=models.DateTimeField(auto_now_add=True)
+
+
+
+
 
