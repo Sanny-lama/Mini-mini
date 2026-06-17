@@ -25,3 +25,20 @@ class Comment(models.Model):
    
 text=models.Textfield()
 created_at =models.DateField(auto_now_add=True)
+
+
+
+
+#notification page
+class NOtification(models.Model):
+ sender=models.Foreignkey(
+  User, on_delete=models.CASCADE)
+ 
+ post=models.Foreign.key(Post, on_delete=models.CASCADE)
+
+ text=models.TextField()
+
+ created_at=models.DateTimeField(auto_now_add=True)
+
+
+
