@@ -1,4 +1,26 @@
 from django.urls import path
+<<<<<<< HEAD
+from . import views
+
+
+urlpatterns = [
+
+    path(
+        "like/<int:id>/",
+        views.like_post,
+        name="like_post"
+    ),
+
+
+    path(
+        "comment/<int:id>/",
+        views.comment_post,
+        name="comment_post"
+    ),
+
+]
+
+=======
 from . import views 
 
 urlpatterns = [
@@ -7,3 +29,4 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('', views.home, name='home'),
 ]
+>>>>>>> 67fbfae5587c94b1e7ae4fa38742934132fdb797
