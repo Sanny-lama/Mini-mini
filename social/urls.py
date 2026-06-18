@@ -1,5 +1,4 @@
 from django.urls import path
-<<<<<<< HEAD
 from . import views
 
 
@@ -20,7 +19,6 @@ urlpatterns = [
 
 ]
 
-=======
 from . import views 
 
 urlpatterns = [
@@ -29,4 +27,4 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('', views.home, name='home'),
 ]
->>>>>>> 67fbfae5587c94b1e7ae4fa38742934132fdb797
+
