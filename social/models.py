@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+<<<<<<< HEAD
 # 1. USER PROFILE TABLE
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -147,3 +148,6 @@ class Notification(models.Model):
     is_read = models.BooleanField(
         default=False
     )
+=======
+# Create your models here.
+>>>>>>> 5c702ca
