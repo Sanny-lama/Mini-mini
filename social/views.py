@@ -3,11 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Post, Like, Comment, Notification
 
 
-
-
-
-
-
+#like post
 @login_required
 def like_post(request, id):
 
@@ -34,7 +30,7 @@ def like_post(request, id):
     return redirect("home")
 
 
-
+#comment post    
 @login_required
 def comment_post(request, id):
 
