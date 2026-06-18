@@ -1,27 +1,68 @@
-from django.shortcuts import render
-
-# Create your views here.
-
-#1st step
-#from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Post, Like, Comment, Notification
 
 
-#def home(request):
-   # return HttpResponse("Hello maya")
-
-#def home(request):
-
-    
-    #return render(request, "home.html")
-
-#2nd step
 
 
-from .models import Post
 
-def home (request):
- posts = Post.objects.all()
-    
- return render(request, "home.html", {
-        "posts": posts
-    })
+
+
+@login_required
+def like_post(request, id):
+
+    post = get_object_or_404(
+        Post,
+        id=id
+    )
+
+
+    like, created = Like.objects.get_or_create(
+        user=request.user,
+        post=post
+    )
+
+
+    if created:
+        Notification.objects.create(
+            sender=request.user,
+            receiver=post.user,
+            type="liked your post"
+        )
+
+
+    return redirect("home")
+
+
+
+@login_required
+def comment_post(request, id):
+
+    post = get_object_or_404(
+        Post,
+        id=id
+    )
+
+
+    if request.method == "POST":
+
+        text = request.POST.get("comment")
+
+
+        if text and text.strip():
+
+            Comment.objects.create(
+                user=request.user,
+                post=post,
+                text=text.strip()
+            )
+
+
+            Notification.objects.create(
+                sender=request.user,
+                receiver=post.user,
+                type="commented on your post"
+            )
+
+
+    return redirect("home")

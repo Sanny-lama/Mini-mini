@@ -5,9 +5,21 @@ from django.contrib.auth.models import User
 #yo bananu ko karan mailey yo bitra socials bata nai post ko 
 # lagi import gardai xu so aauta class post banako ho
 class Post(models.Model):
-  title=models.CharField(max_length=100, default="No title")
-  content=models.TextField()
+    user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
 
+    title=models.CharField(
+        max_length=100,
+        default="No title"
+    )
+
+    content=models.TextField()
+
+    created_at=models.DateTimeField(
+        auto_now_add=True
+    )
 
 
 #feeback page like system
@@ -37,7 +49,7 @@ class Notification(models.Model):
  )
 
 
-tyype=models.CharField(
+type=models.CharField(
  max_length=100    )
   
 
