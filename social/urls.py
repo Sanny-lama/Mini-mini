@@ -1,5 +1,5 @@
 from django.urls import path
-<<<<<<< HEAD
+
 from . import views
 
 
@@ -20,7 +20,7 @@ urlpatterns = [
 
 ]
 
-=======
+
 from . import views 
 
 urlpatterns = [
@@ -29,4 +29,29 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('', views.home, name='home'),
 ]
->>>>>>> 67fbfae5587c94b1e7ae4fa38742934132fdb797
+
+
+
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+]
+
+
+
+
+
+
+# meeeeee
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("",                    views.home,        name="home"),
+    path("post/create/",        views.create_post, name="create_post"),
+    path("post/<int:pk>/edit/", views.edit_post,   name="edit_post"),
+    path("post/<int:pk>/delete/", views.delete_post, name="delete_post"),
+]

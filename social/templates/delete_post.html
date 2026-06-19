@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINIMEDIA - Delete Post</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+        body{background-color:#FBC5CD;display:flex;min-height:100vh;color:#4A1521;}
+
+        .sidebar{width:80px;display:flex;flex-direction:column;align-items:center;padding-top:30px;gap:35px;position:fixed;height:100vh;left:0;top:0;border-right:1px solid rgba(74,21,33,0.1);background:#FBC5CD;z-index:100;}
+        .sidebar a{color:#4A1521;font-size:26px;text-decoration:none;transition:transform .2s,color .2s;}
+        .sidebar a:hover{transform:scale(1.15);color:#dc3545;}
+
+        .main-container{margin-left:80px;flex:1;padding:40px 25px;display:flex;justify-content:center;align-items:center;min-height:100vh;}
+
+        .delete-card{background:#fff;border-radius:16px;box-shadow:0 6px 24px rgba(74,21,33,0.14);width:100%;max-width:460px;overflow:hidden;text-align:center;}
+
+        .delete-banner{background:linear-gradient(135deg,#dc3545,#c82333);padding:28px 24px 20px;color:#fff;}
+        .warning-icon{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 14px;}
+        .delete-banner h2{font-size:1.15rem;font-weight:700;margin:0 0 6px;}
+        .delete-banner p{font-size:0.82rem;opacity:0.9;margin:0;line-height:1.5;}
+
+        .post-snippet{margin:20px;border:1px solid #f0dde0;border-radius:12px;overflow:hidden;text-align:left;}
+        .post-snippet img{width:100%;max-height:140px;object-fit:cover;display:block;}
+        .snippet-body{padding:12px 14px;}
+        .snippet-author{font-size:13px;font-weight:700;color:#4A1521;display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+        .snippet-avatar{width:28px;height:28px;border-radius:50%;background:#E299A6;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#4A1521;}
+        .snippet-caption{font-size:12px;color:#555;line-height:1.5;margin-bottom:4px;}
+        .snippet-meta{font-size:11px;color:#aaa;}
+
+        .delete-actions{display:flex;gap:12px;padding:0 20px 24px;}
+        .btn-cancel{flex:1;padding:11px;border-radius:10px;border:2px solid #4A1521;background:transparent;color:#4A1521;font-weight:700;font-size:13px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;}
+        .btn-cancel:hover{background:#f0dde0;color:#4A1521;}
+        .btn-delete{flex:1;padding:11px;border-radius:10px;border:none;background:#dc3545;color:#fff;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+        .btn-delete:hover{opacity:0.85;}
+        .btn-delete:disabled{opacity:0.6;cursor:not-allowed;}
+
+        @media(max-width:600px){.sidebar{width:55px;}.main-container{margin-left:55px;padding:20px 12px;}}
+    </style>
+</head>
+<body>
+
+<nav class="sidebar">
+    <a href="{% url 'home' %}" title="Home"><i class="fa-solid fa-house"></i></a>
+    <a href="{% url 'create_post' %}" title="Create Post"><i class="fa-solid fa-square-plus"></i></a>
+    <a href="#" title="Notifications"><i class="fa-solid fa-heart"></i></a>
+    <a href="#" title="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+    <a href="#" title="Profile"><i class="fa-solid fa-user"></i></a>
+    <a href="#" title="Logout" style="margin-top:auto;margin-bottom:25px;"><i class="fa-solid fa-right-from-bracket"></i></a>
+</nav>
+
+<main class="main-container">
+    <div class="delete-card">
+
+        <div class="delete-banner">
+            <div class="warning-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h2>Delete this post?</h2>
+            <p>This action <strong>cannot be undone</strong>.<br>The post and its photo will be permanently removed.</p>
+        </div>
+
+        {% if post.caption or post.image %}
+        <div class="post-snippet">
+            {% if post.image %}<img src="{{ post.image.url }}" alt="Post image">{% endif %}
+            <div class="snippet-body">
+                <div class="snippet-author">
+                    <div class="snippet-avatar">{{ post.author.username|slice:":1"|upper }}</div>
+                    {{ post.author.username }}
+                </div>
+                {% if post.caption %}<div class="snippet-caption">{{ post.caption|truncatechars:120 }}</div>{% endif %}
+                <div class="snippet-meta">
+                    <i class="fa-regular fa-clock"></i> Posted {{ post.created_at|timesince }} ago
+                    {% if post.location %}&bull; <i class="fa-solid fa-location-dot" style="color:#dc3545;"></i> {{ post.location }}{% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="delete-actions">
+                <a href="{% url 'home' %}" class="btn-cancel"><i class="fa-solid fa-xmark"></i> Cancel</a>
+                <button type="submit" class="btn-delete" id="deleteBtn">
+                    <i class="fa-solid fa-trash-can"></i> Yes, Delete
+                </button>
+            </div>
+        </form>
+
+    </div>
+</main>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function() {
+        const btn = document.getElementById('deleteBtn');
+        btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Deleting…';
+        btn.disabled=true;
+    });
+</script>
+</body>
+</html>
