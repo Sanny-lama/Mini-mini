@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Post, Like, Comment, Notification
@@ -63,7 +62,7 @@ def comment_post(request, id):
 
 
     return redirect("home")
-=======
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -111,4 +110,3 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
->>>>>>> 67fbfae5587c94b1e7ae4fa38742934132fdb797
