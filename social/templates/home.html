@@ -1,287 +1,279 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MINIMEDIA - Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+
+    <title>Instagram Clone - Home</title>
+
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
-        body{background-color:#FBC5CD;display:flex;min-height:100vh;color:#4A1521;}
 
-        /* SIDEBAR */
-        .sidebar{width:80px;display:flex;flex-direction:column;align-items:center;padding-top:30px;gap:35px;position:fixed;height:100vh;left:0;top:0;border-right:1px solid rgba(74,21,33,0.1);background:#FBC5CD;z-index:100;}
-        .sidebar a{color:#4A1521;font-size:26px;text-decoration:none;transition:transform .2s,color .2s;}
-        .sidebar a:hover{transform:scale(1.15);color:#dc3545;}
+        /* बेसिक ब्याकग्राउन्ड र फन्ट सेटिङ */
 
-        /* MAIN */
-        .main-container{margin-left:80px;flex:1;padding:25px;display:flex;flex-direction:column;gap:25px;}
+        * {
 
-        /* SEARCH */
-        .search-section{max-width:420px;}
-        .search-input{width:100%;border:2px solid #4A1521;padding:8px 18px;border-radius:20px;background:transparent;color:#4A1521;outline:none;font-weight:600;}
-        .search-input::placeholder{color:rgba(74,21,33,0.6);}
-        .search-results-box{background:#fff;border-radius:8px;padding:10px;margin-top:8px;box-shadow:0 4px 10px rgba(0,0,0,0.08);font-size:13px;font-weight:600;}
+            margin: 0;
 
-        /* ALERTS */
-        .alert-msg{max-width:1100px;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;}
-        .alert-success{background:#d4edda;color:#155724;}
-        .alert-error{background:#f8d7da;color:#721c24;}
+            padding: 0;
 
-        /* STORIES STRIP */
-        .stories-container{display:flex;gap:20px;overflow-x:auto;padding-bottom:10px;}
-        .story-item{display:flex;flex-direction:column;align-items:center;width:75px;text-align:center;flex-shrink:0;}
-        .story-circle{width:70px;height:70px;border-radius:50%;border:2px solid #4A1521;background:#FBC5CD;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-        .story-circle img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
-        .story-placeholder{width:100%;height:100%;border-radius:50%;background:#E299A6;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;color:#4A1521;}
-        .story-add-btn{width:100%;height:100%;border-radius:50%;background:#E299A6;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#4A1521;text-decoration:none;}
-        .story-name{font-size:11px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;font-weight:600;}
+            box-sizing: border-box;
 
-        /* POSTS GRID */
-        .posts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:30px;max-width:1100px;}
-        .post-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.07);display:flex;flex-direction:column;}
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-        /* POST HEADER */
-        .post-header{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;}
-        .post-user-info{display:flex;align-items:center;gap:10px;}
-        .post-avatar{width:36px;height:36px;border-radius:50%;background:#E299A6;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#4A1521;flex-shrink:0;}
-        .post-meta-text{display:flex;flex-direction:column;}
-        .username{font-size:14px;font-weight:700;}
-        .time-location{font-size:11px;color:#777;margin-top:1px;}
-        .edited-badge{font-size:10px;color:#aaa;margin-left:3px;}
-
-        /* THREE-DOT DROPDOWN */
-        .more-options-wrap{position:relative;}
-        .more-options-btn{background:none;border:none;cursor:pointer;font-size:18px;color:#4A1521;padding:4px 8px;border-radius:6px;}
-        .more-options-btn:hover{background:rgba(74,21,33,0.08);}
-        .options-dropdown{display:none;position:absolute;right:0;top:110%;background:#fff;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,0.14);min-width:150px;z-index:50;overflow:hidden;}
-        .options-dropdown.show{display:block;}
-        .options-dropdown a{display:flex;align-items:center;gap:9px;padding:11px 16px;font-size:13px;font-weight:600;color:#333;text-decoration:none;}
-        .options-dropdown a:hover{background:#FBC5CD;color:#4A1521;}
-        .options-dropdown a.delete-opt{color:#dc3545;}
-        .options-dropdown a.delete-opt:hover{background:#ffe0e3;}
-
-        /* POST IMAGE */
-        .post-image-wrapper{position:relative;width:100%;padding-top:75%;background:#f0e0e3;}
-        .post-image-wrapper img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
-
-        /* POST BODY */
-        .post-caption-text{padding:10px 15px 4px;font-size:13px;color:#333;line-height:1.5;}
-        .post-location-badge{padding:0 15px 6px;font-size:11px;color:#dc3545;}
-
-        /* POST ACTIONS */
-        .post-actions{display:flex;align-items:center;justify-content:space-between;padding:8px 15px 12px;}
-        .left-actions{display:flex;gap:15px;font-size:22px;}
-        .left-actions i{cursor:pointer;transition:transform .15s;}
-        .left-actions i:hover{transform:scale(1.2);}
-
-        /* COMMENT BOX */
-        .comment-box{padding:0 15px 15px;display:flex;align-items:center;gap:10px;}
-        .comment-input-wrapper{flex:1;background:#F0F2F5;border-radius:20px;padding:6px 15px;}
-        .comment-input-wrapper input{width:100%;border:none;background:transparent;outline:none;font-size:12px;}
-
-        /* EMPTY STATE */
-        .empty-state{max-width:1100px;text-align:center;padding:60px 20px;background:#fff;border-radius:14px;}
-        .empty-state i{font-size:3rem;color:#E299A6;margin-bottom:16px;display:block;}
-
-        /* PAGINATION */
-        .pagination-wrap{display:flex;gap:12px;align-items:center;padding-bottom:30px;}
-        .pg-btn{padding:8px 20px;border-radius:20px;background:#4A1521;color:#fff;text-decoration:none;font-size:13px;font-weight:600;}
-        .pg-btn:hover{opacity:0.8;color:#fff;}
-        .pg-info{font-size:13px;font-weight:600;color:#4A1521;}
-
-        @media(max-width:600px){
-            .sidebar{width:55px;}
-            .main-container{margin-left:55px;padding:15px;}
-            .posts-grid{grid-template-columns:1fr;}
         }
+
+
+
+        body {
+
+            background-color: #000000;
+
+            color: #ffffff;
+
+            display: flex;
+
+        }
+
+
+
+        /* साइडबारको स्टाइल - आइकनहरू नभत्किउन् भन्नका लागि */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            height: 100vh;
+
+            width: 75px;
+
+            background-color: #000000;
+
+            border-right: 1px solid #262626;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            padding-top: 30px;
+
+            z-index: 100;
+
+        }
+
+
+
+        /* मुख्य आइकनहरूको साइज फिक्स गर्ने (तिम्रो ठूलो देखिएको समस्या यसले समाधान गर्छ) */
+
+        .nav-icon {
+
+            width: 24px;
+
+            height: 24px;
+
+            stroke: #ffffff;
+
+            stroke-width: 2;
+
+            stroke-linecap: round;
+
+            stroke-linejoin: round;
+
+            fill: none;
+
+            cursor: pointer;
+
+            transition: transform 0.2s ease, stroke 0.2s ease;
+
+            margin-bottom: 35px;
+
+        }
+
+
+
+        .nav-icon:hover {
+
+            transform: scale(1.1);
+
+            stroke: #fa7e1e; /* होभर गर्दा इन्स्टाग्राम कलर थिम */
+
+        }
+
+
+
+        /* साइडबारको तल लगआउट बटन पुश गर्न */
+
+        .logout-link {
+
+            margin-top: auto;
+
+            margin-bottom: 25px;
+
+        }
+
+
+
+        /* मुख्य कन्टेन्ट एरिया (फिड) */
+
+        .main-content {
+
+            margin-left: 75px;
+
+            padding: 30px;
+
+            width: 100%;
+
+            max-width: 600px;
+
+            margin-right: auto;
+
+        }
+
+
+
+        .header-title {
+
+            font-size: 24px;
+
+            font-weight: 700;
+
+            margin-bottom: 40px;
+
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+        }
+
+
+
+        .welcome-box {
+
+            background-color: #121212;
+
+            border: 1px solid #262626;
+
+            border-radius: 8px;
+
+            padding: 30px;
+
+            text-align: center;
+
+        }
+
+
+
+        .welcome-box h2 {
+
+            margin-bottom: 10px;
+
+            font-size: 20px;
+
+        }
+
+
+
+        .welcome-box p {
+
+            color: #a8a8a8;
+
+            font-size: 14px;
+
+        }
+
     </style>
+
 </head>
+
 <body>
 
-<!-- SIDEBAR -->
-<nav class="sidebar">
-    <a href="{% url 'home' %}" title="Home"><i class="fa-solid fa-house"></i></a>
-    <a href="{% url 'create_post' %}" title="Create Post"><i class="fa-solid fa-square-plus"></i></a>
-    <a href="#" title="Notifications"><i class="fa-solid fa-heart"></i></a>
-    <a href="#" title="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
-    <a href="#" title="Profile"><i class="fa-solid fa-user"></i></a>
-    <a href="#" title="Logout" style="margin-top:auto;margin-bottom:25px;">
-        <i class="fa-solid fa-right-from-bracket"></i>
-    </a>
-</nav>
 
-<main class="main-container">
 
-    <!-- SEARCH -->
-    <section class="search-section">
-        <form method="GET" action="{% url 'home' %}">
-            <input type="text" name="q" class="search-input"
-                   placeholder="🔍 Search posts or users..."
-                   value="{{ search_query|default:'' }}" autocomplete="off">
-        </form>
-        {% if search_query %}
-        <div class="search-results-box">
-            {% if posts.paginator.count %}
-                Results for "<strong>{{ search_query }}</strong>" — {{ posts.paginator.count }} post{{ posts.paginator.count|pluralize }} found
+    <nav class="sidebar">
+
+        <a href="{% url 'home' %}">
+
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+
+        </a>
+
+       
+
+        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+
+       
+
+        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+
+       
+
+        <svg class="nav-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+
+       
+
+        <svg class="nav-icon profile-fallback" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+       
+
+        <a href="{% url 'logout' %}" title="Logout" class="logout-link">
+
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+
+        </a>
+
+    </nav>
+
+
+
+    <main class="main-content">
+
+        <h1 class="header-title">Instagram</h1>
+
+       
+
+<div class="welcome-box">
+
+            {% if user.is_authenticated %}
+
+                <h2>Welcome to your Feed, {{ request.user.username }}! 👋</h2>
+
+                <p>Here you'll see posts from the people you follow. Start exploring and connecting with all your friends!</p>
+
+               
+
+                <a href="{% url 'feed' %}" class="cta-button">Go to News Feed</a>
+
             {% else %}
-                No posts found for "<strong>{{ search_query }}</strong>"
-            {% endif %}
-        </div>
-        {% endif %}
-    </section>
 
-    <!-- DJANGO MESSAGES -->
-    {% if messages %}
-        {% for message in messages %}
-        <div class="alert-msg {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
-            <i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% else %}fa-circle-exclamation{% endif %}"></i>
-            {{ message }}
-        </div>
-        {% endfor %}
-    {% endif %}
+                <h2>Welcome to Instagram Clone 👋</h2>
 
-    <!-- RECENT POSTS STRIP -->
-    <section class="stories-container">
-        <div class="story-item">
-            <a href="{% url 'create_post' %}" class="story-circle">
-                <div class="story-add-btn">+</div>
-            </a>
-            <div class="story-name">New Post</div>
-        </div>
-        {% for p in recent_posts %}
-        <div class="story-item">
-            <div class="story-circle">
-                {% if p.image %}
-                    <img src="{{ p.image.url }}" alt="{{ p.author.username }}">
-                {% else %}
-                    <div class="story-placeholder">{{ p.author.username|slice:":1"|upper }}</div>
-                {% endif %}
-            </div>
-            <div class="story-name">{{ p.author.username|truncatechars:10 }}</div>
-        </div>
-        {% endfor %}
-    </section>
+                <p>Please log in or create a new account to see updates and share posts with friends.</p>
 
-    <!-- POSTS GRID -->
-    <section class="posts-grid">
-        {% for post in posts %}
-        <article class="post-card">
+               
 
-            <!-- Header -->
-            <div class="post-header">
-                <div class="post-user-info">
-                    <div class="post-avatar">{{ post.author.username|slice:":1"|upper }}</div>
-                    <div class="post-meta-text">
-                        <span class="username">{{ post.author.username }}</span>
-                        <span class="time-location">
-                            {{ post.created_at|timesince }} ago
-                            {% if post.location %}&bull; <i class="fa-solid fa-location-dot" style="color:#dc3545;font-size:10px;"></i> {{ post.location }}{% endif %}
-                            {% if post.was_edited %}<span class="edited-badge">(edited)</span>{% endif %}
-                        </span>
-                    </div>
-                </div>
-                {% if post.author == request.user %}
-                <div class="more-options-wrap">
-                    <button class="more-options-btn" onclick="toggleDropdown('drop-{{ post.id }}')">
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </button>
-                    <div class="options-dropdown" id="drop-{{ post.id }}">
-                        <a href="{% url 'edit_post' post.id %}">
-                            <i class="fa-solid fa-pen-to-square" style="color:#3a86ff;"></i> Edit Post
-                        </a>
-                        <a href="{% url 'delete_post' post.id %}" class="delete-opt">
-                            <i class="fa-solid fa-trash-can"></i> Delete Post
-                        </a>
-                    </div>
-                </div>
-                {% else %}
-                <span style="font-size:18px;color:#ccc;">•••</span>
-                {% endif %}
-            </div>
+                <a href="{% url 'login' %}" class="cta-button">Login / Register</a>
 
-            <!-- Caption -->
-            {% if post.caption %}
-            <div class="post-caption-text">
-                <strong>{{ post.author.username }}</strong> {{ post.caption }}
-            </div>
             {% endif %}
 
-            <!-- Image -->
-            {% if post.image %}
-            <div class="post-image-wrapper">
-                <img src="{{ post.image.url }}" alt="Post image" loading="lazy">
-            </div>
-            {% endif %}
-
-            <!-- Location badge -->
-            {% if post.location %}
-            <div class="post-location-badge">
-                <i class="fa-solid fa-location-dot"></i> {{ post.location }}
-            </div>
-            {% endif %}
-
-            <!-- Action buttons -->
-            <div class="post-actions">
-                <div class="left-actions">
-                    <i class="fa-regular fa-heart" style="color:#dc3545;" title="Like"></i>
-                    <i class="fa-regular fa-comment" title="Comment"></i>
-                    <i class="fa-regular fa-paper-plane" title="Share"></i>
-                </div>
-                <i class="fa-regular fa-bookmark" style="font-size:22px;" title="Save"></i>
-            </div>
-
-            <!-- Comment placeholder -->
-            <div class="comment-box">
-                <div class="comment-input-wrapper">
-                    <input type="text" placeholder="Add a comment...">
-                </div>
-            </div>
-
-        </article>
-        {% empty %}
-        <div class="empty-state">
-            <i class="fa-regular fa-images"></i>
-            <h5 style="font-weight:700;margin-bottom:10px;">No posts yet</h5>
-            <p style="color:#777;margin-bottom:20px;">Be the first to share a moment!</p>
-            <a href="{% url 'create_post' %}" style="background:#4A1521;color:#fff;padding:10px 26px;border-radius:20px;text-decoration:none;font-weight:700;">
-                + Create First Post
-            </a>
         </div>
-        {% endfor %}
-    </section>
 
-    <!-- PAGINATION -->
-    {% if posts.has_other_pages %}
-    <div class="pagination-wrap">
-        {% if posts.has_previous %}
-            <a href="?page={{ posts.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="pg-btn">
-                <i class="fa-solid fa-chevron-left"></i> Previous
-            </a>
-        {% endif %}
-        <span class="pg-info">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
-        {% if posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="pg-btn">
-                Next <i class="fa-solid fa-chevron-right"></i>
-            </a>
-        {% endif %}
-    </div>
-    {% endif %}
+    </main>
 
-</main>
 
-<script>
-    function toggleDropdown(id) {
-        const el = document.getElementById(id);
-        document.querySelectorAll('.options-dropdown').forEach(d => { if (d.id !== id) d.classList.remove('show'); });
-        el.classList.toggle('show');
-    }
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.more-options-wrap'))
-            document.querySelectorAll('.options-dropdown').forEach(d => d.classList.remove('show'));
-    });
-</script>
+
 </body>
+
 </html>

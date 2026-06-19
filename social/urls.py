@@ -1,5 +1,4 @@
 from django.urls import path
-
 from . import views
 
 
@@ -20,7 +19,6 @@ urlpatterns = [
 
 ]
 
-
 from . import views 
 
 urlpatterns = [
@@ -30,28 +28,3 @@ urlpatterns = [
     path('', views.home, name='home'),
 ]
 
-
-
-
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('', views.home, name='home'),
-]
-
-
-
-
-
-
-# meeeeee
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path("",                    views.home,        name="home"),
-    path("post/create/",        views.create_post, name="create_post"),
-    path("post/<int:pk>/edit/", views.edit_post,   name="edit_post"),
-    path("post/<int:pk>/delete/", views.delete_post, name="delete_post"),
-]
